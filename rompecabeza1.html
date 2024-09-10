@@ -33,7 +33,6 @@
             background-color: #fffde7; 
             position: relative;
             overflow: hidden; /* Asegura que la imagen completa no se desborde del tablero */
-            transition: background 0.5s ease; /* Transición para la imagen completa */
         }
 
         .pieces-container {
@@ -57,16 +56,12 @@
             background-size: 300px 300px; 
             border: 2px solid #0288d1; 
             border-radius: 5px;
-            transition: opacity 0.5s ease; /* Animación de desvanecimiento al encajar */
+            transition: opacity 0.3s ease-in-out; /* Agrega animación de desvanecimiento */
         }
 
         .selected {
             border: 3px solid #ff9800;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .puzzle-piece.hidden {
-            opacity: 0;
         }
 
         button {
@@ -132,7 +127,7 @@
     <div id="message" class="message">¡Felicidades! Has completado el rompecabezas.</div>
 
     <script>
-        const imgSrc = 'images/puzzle1.jpg'; 
+        const imgSrc = 'images/puzzle2.jpg'; 
         const puzzleBoard = document.getElementById('puzzle-board');
         const piecesContainer = document.getElementById('pieces-container');
         const message = document.getElementById('message');
@@ -193,11 +188,15 @@
                     targetSlot.style.backgroundImage = selectedPiece.style.backgroundImage;
                     targetSlot.style.backgroundPosition = selectedPiece.style.backgroundPosition;
 
-                    selectedPiece.classList.add('hidden');
-                    setTimeout(() => selectedPiece.parentNode.removeChild(selectedPiece), 500); // Tiempo de animación de desvanecimiento
+                    // Agregar animación de desvanecimiento
+                    selectedPiece.style.opacity = '0';
+                    setTimeout(() => {
+                        selectedPiece.parentNode.removeChild(selectedPiece);
+                        selectedPiece.style.opacity = '1';
+                        selectedPiece = null;
+                        checkWin();
+                    }, 300); // Tiempo para desvanecimiento
 
-                    selectedPiece = null;
-                    checkWin();
                 } else {
                     targetSlot.style.backgroundColor = 'red';
                     setTimeout(() => targetSlot.style.backgroundColor = '', 1000); // Tiempo reducido a 1 segundo
@@ -219,19 +218,18 @@
             });
 
             if (isSolved && piecesContainer.children.length === 0) {
-                // Transición a la imagen completa
+                // Mostrar la imagen completa en el tablero
                 puzzleBoard.style.backgroundImage = `url(${imgSrc})`;
-                puzzleBoard.style.backgroundSize = '300px 300px'; // Ajusta el tamaño al del tablero
-                puzzleBoard.style.backgroundPosition = '0 0'; // Ajusta la posición de la imagen
+                puzzleBoard.style.backgroundSize = '300px 300px';
+                puzzleBoard.style.backgroundPosition = '0 0';
 
                 setTimeout(() => {
                     message.style.display = 'flex'; // Mostrar el mensaje de felicitación
-                }, 2000); // Mostrar el mensaje después de 2 segundos
-
-                setTimeout(() => {
-                    message.style.display = 'none'; // Ocultar el mensaje después de 2 segundos
-                    createPuzzle(); // Limpiar el tablero y reiniciar el juego
-                }, 4000); // Tiempo total de 2s de imagen completa + 2s de mensaje de felicitación
+                    setTimeout(() => {
+                        message.style.display = 'none'; // Ocultar el mensaje después de 2 segundos
+                        createPuzzle(); // Limpiar el tablero y reiniciar el juego
+                    }, 2000); // Tiempo que se muestra el mensaje
+                }, 2000); // Tiempo que se muestra la imagen completa
             }
         }
 
