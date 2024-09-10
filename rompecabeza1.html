@@ -5,175 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juego de Rompecabezas</title>
     <style>
-    body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        background-color: #e0f7fa; 
-        margin: 0;
-        padding: 20px;
-        overflow: hidden; /* Oculta el desbordamiento para mantener el contenido estático en dispositivos móviles */
-    }
-
-    .main-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 20px;
-        flex-direction: column;
-    }
-
-    .puzzle-board {
-        position: relative; /* Necesario para mostrar la imagen completa */
-        width: 300px; 
-        height: 300px;
-        display: grid;
-        grid-template-columns: repeat(3, 100px); 
-        grid-template-rows: repeat(3, 100px); 
-        gap: 2px;
-        border: 3px solid #ff9800;
-        background-color: #fffde7; 
-        overflow: hidden; /* Asegura que la imagen completa no se desborde */
-    }
-
-    .pieces-container {
-        display: grid;
-        grid-template-columns: repeat(3, 100px); 
-        grid-gap: 10px;
-        justify-content: center;
-        align-items: center;
-        width: 300px; 
-        height: 300px; 
-        border: 3px solid #00796b; 
-        background-color: #f1f8e9;
-        padding: 10px;
-        margin-top: 20px;
-    }
-
-    .puzzle-piece {
-        width: 98px; /* Ajustado al tamaño total del tablero */
-        height: 98px;
-        cursor: pointer;
-        background-size: 300px 300px; 
-        border: 2px solid #0288d1; 
-        border-radius: 5px;
-    }
-
-    .selected {
-        border: 3px solid #ff9800;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-    }
-
-    button {
-        padding: 10px 20px;
-        font-size: 16px;
-        margin-top: 20px;
-        cursor: pointer;
-        background-color: #ff9800;
-        color: white;
-        border: none;
-        border-radius: 5px;
-    }
-
-    button:hover {
-        background-color: #e65100;
-    }
-
-    .message {
-        position: fixed; /* Cambiado a fixed para que se muestre en toda la pantalla */
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 128, 0, 0.8);
-        color: white;
-        font-size: 24px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 20px;
-        box-sizing: border-box;
-        border-radius: 5px;
-        z-index: 1000;
-        display: none; /* Inicialmente oculto */
-    }
-
-    .puzzle-piece.complete {
-        animation: explode 1s forwards; /* Duración de la animación */
-    }
-
-    @keyframes explode {
-        0% {
-            transform: scale(1);
-            opacity: 1;
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #e0f7fa; 
+            margin: 0;
+            padding: 20px;
+            overflow: hidden; /* Oculta el desbordamiento para mantener el contenido estático en dispositivos móviles */
         }
-        100% {
-            transform: scale(1.2);
-            opacity: 0;
-        }
-    }
 
-    .full-image {
-        display: none; /* Oculto por defecto */
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center;
-        background-image: url('images/puzzle1.jpg'); /* Cambia la ruta si es necesario */
-    }
-
-    .show-full-image {
-        display: block;
-    }
-
-    /* Estilos para dispositivos móviles */
-    @media (max-width: 600px) {
-        .puzzle-board, .pieces-container {
-            width: 100%;
-            height: auto;
-            max-width: 300px; /* Limitar el ancho máximo */
-        }
-        .puzzle-piece {
-            width: 90px; /* Ajustar el tamaño de las piezas */
-            height: 90px;
-        }
         .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
             flex-direction: column;
         }
-    }
-</style>
 
+        .puzzle-board {
+            width: 300px; 
+            height: 300px;
+            display: grid;
+            grid-template-columns: repeat(3, 100px); 
+            grid-template-rows: repeat(3, 100px); 
+            gap: 2px;
+            border: 3px solid #ff9800;
+            background-color: #fffde7; 
+            position: relative; /* Asegura que el contenedor de la imagen completa se posicione correctamente */
+        }
+
+        .pieces-container {
+            display: grid;
+            grid-template-columns: repeat(3, 100px); 
+            grid-gap: 10px;
+            justify-content: center;
+            align-items: center;
+            width: 300px; 
+            height: 300px; 
+            border: 3px solid #00796b; 
+            background-color: #f1f8e9;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .puzzle-piece {
+            width: 98px; /* Ajustado al tamaño total del tablero */
+            height: 98px;
+            cursor: pointer;
+            background-size: 300px 300px; 
+            border: 2px solid #0288d1; 
+            border-radius: 5px;
+        }
+
+        .selected {
+            border: 3px solid #ff9800;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #e65100;
+        }
+
+        .message {
+            position: fixed; /* Cambiado a fixed para que se muestre en toda la pantalla */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 128, 0, 0.8);
+            color: white;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            z-index: 1000;
+            display: none; /* Inicialmente oculto */
+        }
+
+        .full-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('images/puzzle1.jpg'); /* Imagen completa del rompecabezas */
+            background-size: cover;
+            background-position: center;
+            display: none; /* Inicialmente oculto */
+        }
+
+        /* Estilos para dispositivos móviles */
+        @media (max-width: 600px) {
+            .puzzle-board, .pieces-container {
+                width: 100%;
+                height: auto;
+                max-width: 300px; /* Limitar el ancho máximo */
+            }
+            .puzzle-piece {
+                width: 90px; /* Ajustar el tamaño de las piezas */
+                height: 90px;
+            }
+            .main-container {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
+    <h1>Rompecabezas</h1>
     <div class="main-container">
-        <div id="puzzle-board" class="puzzle-board"></div>
+        <div id="puzzle-board" class="puzzle-board">
+            <div id="full-image" class="full-image"></div>
+        </div>
         <div id="pieces-container" class="pieces-container"></div>
     </div>
     <button id="restart">Reiniciar</button>
     <button id="back">Volver</button>
 
     <div id="message" class="message">¡Felicidades! Has completado el rompecabezas.</div>
-    
+
     <script>
         const imgSrc = 'images/puzzle1.jpg'; 
         const puzzleBoard = document.getElementById('puzzle-board');
         const piecesContainer = document.getElementById('pieces-container');
         const message = document.getElementById('message');
-        const fullImage = document.createElement('div');
+        const fullImage = document.getElementById('full-image');
         let pieces = [];
         let emptySlots = [];
         let selectedPiece = null;
-    
+
         function createPuzzle() {
             const order = [...Array(9).keys()];
             order.sort(() => Math.random() - 0.5); 
-    
+
             puzzleBoard.innerHTML = ''; 
             piecesContainer.innerHTML = ''; 
+            fullImage.style.display = 'none'; // Asegurarse de que la imagen completa esté oculta al iniciar
             message.style.display = 'none'; // Asegurarse de que el mensaje esté oculto al iniciar
             pieces = [];
             emptySlots = [];
-    
+
             for (let i = 0; i < 9; i++) {
                 const slot = document.createElement('div');
                 slot.classList.add('puzzle-piece');
@@ -181,28 +167,23 @@
                 slot.addEventListener('click', placePiece);
                 puzzleBoard.appendChild(slot);
                 emptySlots.push(slot);
-    
+
                 const piece = document.createElement('div');
                 piece.classList.add('puzzle-piece');
                 piece.style.backgroundImage = `url(${imgSrc})`;
-    
+
                 const x = (order[i] % 3) * -100;
                 const y = Math.floor(order[i] / 3) * -100;
                 piece.style.backgroundPosition = `${x}px ${y}px`;
-    
+
                 piece.dataset.index = order[i];
                 piece.addEventListener('click', selectPiece);
-    
+
                 piecesContainer.appendChild(piece);
                 pieces.push(piece);
             }
-    
-            // Configurar la imagen completa
-            fullImage.classList.add('full-image');
-            fullImage.style.backgroundImage = `url(${imgSrc})`;
-            document.body.appendChild(fullImage);
         }
-    
+
         function selectPiece(e) {
             if (selectedPiece) {
                 selectedPiece.classList.remove('selected');
@@ -210,20 +191,19 @@
             selectedPiece = e.target;
             selectedPiece.classList.add('selected');
         }
-    
+
         function placePiece(e) {
             if (selectedPiece) {
                 const targetSlot = e.target;
-    
+
                 const pieceIndex = parseInt(selectedPiece.dataset.index);
                 const slotIndex = parseInt(targetSlot.dataset.index);
-    
+
                 if (pieceIndex === slotIndex) {
                     targetSlot.style.backgroundImage = selectedPiece.style.backgroundImage;
                     targetSlot.style.backgroundPosition = selectedPiece.style.backgroundPosition;
-    
-                    selectedPiece.classList.add('complete'); // Añadir clase para animación
-                    setTimeout(() => selectedPiece.parentNode.removeChild(selectedPiece), 1000); // Retirar pieza después de la animación
+
+                    selectedPiece.parentNode.removeChild(selectedPiece);
                     selectedPiece = null;
                     checkWin();
                 } else {
@@ -232,41 +212,38 @@
                 }
             }
         }
-    
+
         function checkWin() {
             let isSolved = true;
-    
+
             emptySlots.forEach((slot, index) => {
                 const slotIndex = parseInt(slot.dataset.index);
                 const bgPosition = slot.style.backgroundPosition;
                 const correctPosition = `${(slotIndex % 3) * -100}px ${(Math.floor(slotIndex / 3) * -100)}px`;
-    
+
                 if (bgPosition !== correctPosition) {
                     isSolved = false;
                 }
             });
-    
+
             if (isSolved && piecesContainer.children.length === 0) {
-                // Mostrar la imagen completa
-                fullImage.classList.add('show-full-image');
+                fullImage.style.display = 'block'; // Mostrar la imagen completa
                 setTimeout(() => {
-                    fullImage.classList.remove('show-full-image'); // Ocultar la imagen completa después de 2 segundos
-                    message.style.display = 'flex'; // Mostrar el mensaje al completar el rompecabezas
+                    message.style.display = 'flex'; // Mostrar el mensaje de felicitación
                     setTimeout(() => {
-                        message.style.display = 'none'; // Ocultar el mensaje después de 3 segundos
+                        message.style.display = 'none'; // Ocultar el mensaje después de 2 segundos
                         createPuzzle(); // Limpiar el tablero y reiniciar el juego
-                    }, 3000); // Tiempo que se muestra el mensaje
+                    }, 2000); // Tiempo que se muestra el mensaje
                 }, 2000); // Tiempo que se muestra la imagen completa
             }
         }
-    
+
         document.getElementById('restart').addEventListener('click', createPuzzle);
         document.getElementById('back').addEventListener('click', () => {
             window.location.href = 'index.html'; // Cambia 'index.html' por la ruta de tu página de inicio
         });
-    
+
         createPuzzle();
     </script>
-    
 </body>
 </html>
