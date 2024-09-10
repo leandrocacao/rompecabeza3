@@ -244,18 +244,18 @@
                     puzzleBoard.style.backgroundSize = '300px 300px';
                     puzzleBoard.style.backgroundPosition = 'center';
                     emptySlots.forEach(slot => slot.style.display = 'none'); // Eliminar las casillas
-                }, 1000); // Tiempo de la animación de desvanecimiento
+                }, 700); // Reducido el tiempo de 1000ms a 700ms
 
                 setTimeout(() => {
                     message.style.display = 'flex';
-                }, 2000);
+                }, 1700); // Aumentado el tiempo total para mostrar la imagen (1000ms más que antes)
 
                 setTimeout(() => {
                     message.style.display = 'none';
                     createPuzzle();
-                }, 4000);
-            }
-        }
+                }, 3700); // Incrementado el tiempo para mantener la imagen visible
+                }
+                }
 
         document.getElementById('restart').addEventListener('click', createPuzzle);
         document.getElementById('back').addEventListener('click', () => {
