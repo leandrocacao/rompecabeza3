@@ -96,32 +96,40 @@
             display: none; 
         }
 
-        /* Estilos específicos para dispositivos móviles */
-        @media (max-width: 600px) {
+        /* Estilos generales para móvil */
+        @media only screen and (max-width: 768px) {
             .main-container {
-                flex-direction: column; 
+                flex-direction: column;
+                align-items: center;
+            }
+
+        .puzzle-board, .pieces-container {
+                width: 90vw; /* Ajuste dinámico del ancho en vertical */
+                height: 90vw; /* Para que se mantenga cuadrado */
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(3, 1fr);
+        }
+
+        .puzzle-piece {
+                width: calc(90vw / 3 - 10px); /* Ajuste del tamaño de las piezas */
+                height: calc(90vw / 3 - 10px); 
+            }
+        }
+
+        /* Modo horizontal para dispositivos móviles */
+        @media only screen and (orientation: landscape) {
+            .main-container {
+                flex-direction: row;
             }
 
             .puzzle-board, .pieces-container {
-                width: 100%; 
-                height: auto; 
-            }
-
-            .puzzle-board {
-                grid-template-columns: repeat(3, 1fr); 
-                grid-template-rows: repeat(3, auto); 
-                gap: 2px;
-            }
-
-            .pieces-container {
-                grid-template-columns: repeat(3, 1fr); 
-                grid-gap: 10px;
-                margin: 0;
+                width: 300px; /* Como en el ordenador */
+                height: 300px;
             }
 
             .puzzle-piece {
-                width: 100%; 
-                height: auto; 
+                width: 95px;
+                height: 95px;
             }
         }
     </style>
