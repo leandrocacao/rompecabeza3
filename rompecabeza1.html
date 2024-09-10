@@ -13,12 +13,6 @@
             padding: 20px;
         }
 
-        h1 {
-            color: #00796b; 
-            font-size: 32px;
-            margin-bottom: 20px;
-        }
-
         .main-container {
             display: flex;
             justify-content: center;
@@ -119,7 +113,6 @@
     </style>
 </head>
 <body>
-    <h1>Rompecabezas de Blippi #1</h1>
     <div class="main-container">
         <div id="puzzle-board" class="puzzle-board"></div>
         <div id="pieces-container" class="pieces-container"></div>
@@ -196,7 +189,7 @@
                     checkWin();
                 } else {
                     targetSlot.style.backgroundColor = 'red';
-                    setTimeout(() => targetSlot.style.backgroundColor = '', 3000);
+                    setTimeout(() => targetSlot.style.backgroundColor = '', 2000); // Tiempo reducido a 2 segundos
                 }
             }
         }
