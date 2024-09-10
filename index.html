@@ -6,89 +6,97 @@
     <title>Página Principal - Rompecabezas</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #e0f7fa; /* Celeste suave */
-            margin: 0;
-            padding: 20px;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #e0f7fa; /* Celeste suave */
+        margin: 0;
+        padding: 20px;
+    }
 
-        h1 {
-            color: #00796b; /* Verde oscuro */
-            font-size: 40px; /* Tamaño de título aumentado */
-            margin-top: 10px;
-            margin-bottom: 20px;
-        }
+    h1 {
+        color: #00796b; /* Verde oscuro */
+        font-size: 40px; /* Tamaño de título aumentado */
+        margin-bottom: 20px;
+    }
 
-        .main-container {
-            display: flex;
-            flex-direction: column;
-            gap: 30px; /* Espacio entre filas */
-            align-items: center;
-        }
+    .main-container {
+        display: flex;
+        flex-direction: column;
+        gap: 30px; /* Espacio entre filas */
+    }
 
+    .puzzle-options {
+        display: flex;
+        flex-wrap: wrap; /* Permite el ajuste automático de los rompecabezas */
+        gap: 30px; /* Espaciado entre rompecabezas */
+        justify-content: center; /* Centra los rompecabezas */
+    }
+
+    .puzzle-option {
+        width: 315px; /* Tamaño de las opciones aumentado */
+        height: 315px; /* Tamaño de las opciones aumentado */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid #00796b; /* Verde oscuro */
+        background-color: #f1f8e9; /* Fondo verde claro */
+        border-radius: 6px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
+        cursor: pointer;
+        position: relative;
+    }
+
+    .puzzle-option img {
+        width: 100%;
+        height: auto;
+        border-bottom: 3px solid #0288d1; /* Azul celeste */
+    }
+
+    .puzzle-option h2 {
+        margin: 15px 0;
+        color: #00796b; /* Verde oscuro */
+        font-size: 24px; /* Tamaño del título aumentado */
+    }
+
+    .puzzle-option p {
+        color: #333;
+        font-size: 16px; /* Tamaño del texto aumentado */
+    }
+
+    footer {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 18px;
+        color: #00796b; /* Verde oscuro */
+    }
+
+    /* CSS para pantallas de ordenador (4 rompecabezas por fila) */
+    @media (min-width: 601px) {
         .puzzle-options {
-            display: flex;
-            flex-wrap: wrap; /* Permite que las opciones se ajusten a varias filas */
-            justify-content: center;
-            gap: 20px; /* Espaciado entre opciones */
-            max-width: 100%;
+            flex-direction: row; /* Alinea horizontalmente */
+            flex-wrap: wrap; /* Ajusta el contenido en varias filas si es necesario */
+        }
+        .puzzle-option {
+            width: calc(25% - 30px); /* 4 rompecabezas por fila con espacio entre ellos */
+            height: 315px;
+        }
+    }
+
+    /* CSS para dispositivos móviles (2 rompecabezas por fila) */
+    @media (max-width: 600px) {
+        .puzzle-options {
+            grid-template-columns: repeat(2, 1fr); /* 2 rompecabezas por fila */
+            gap: 20px; /* Espaciado entre rompecabezas */
+            display: grid; /* Usa grid para la disposición en filas */
         }
 
         .puzzle-option {
-            width: 90vw; /* Ajusta el tamaño de las opciones para que se acomoden en pantallas móviles */
-            max-width: 315px; /* Tamaño máximo para pantallas más grandes */
+            width: 100%; /* Asegura que cada rompecabezas ocupe el 100% del contenedor */
             height: auto; /* Ajusta la altura de acuerdo al contenido */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 3px solid #00796b; /* Verde oscuro */
-            background-color: #f1f8e9; /* Fondo verde claro */
-            border-radius: 6px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
-            cursor: pointer;
-            position: relative;
         }
-
-        .puzzle-option img {
-            width: 100%;
-            height: auto;
-            border-bottom: 3px solid #0288d1; /* Azul celeste */
-        }
-
-        .puzzle-option h2 {
-            margin: 15px 0;
-            color: #00796b; /* Verde oscuro */
-            font-size: 24px; /* Tamaño del título aumentado */
-        }
-
-        .puzzle-option p {
-            color: #333;
-            font-size: 16px; /* Tamaño del texto aumentado */
-            margin: 0; /* Elimina el margen adicional */
-        }
-
-        footer {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 18px;
-            color: #00796b; /* Verde oscuro */
-        }
-
-        /* CSS para dispositivos móviles */
-        @media (max-width: 600px) {
-            .puzzle-options {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr); /* 2 rompecabezas por fila */
-                gap: 20px; /* Espaciado entre rompecabezas */
-            }
-
-            .puzzle-option {
-                width: 100%; /* Asegura que cada rompecabezas ocupe el 100% del contenedor */
-            }
-        }
+    }
     </style>
 </head>
 <body>
