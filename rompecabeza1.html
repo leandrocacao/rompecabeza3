@@ -31,8 +31,7 @@
             gap: 2px;
             border: 3px solid #ff9800;
             background-color: #fffde7; 
-            position: relative;
-            overflow: hidden; /* Asegura que el contenido del tablero no se desborde */
+            position: relative; /* Necesario para la animación de la imagen completa */
         }
 
         .pieces-container {
@@ -56,7 +55,7 @@
             background-size: 300px 300px; 
             border: 2px solid #0288d1; 
             border-radius: 5px;
-            transition: transform 0.3s ease; /* Animación de desvanecimiento */
+            transition: opacity 0.5s; /* Animación de desvanecimiento */
         }
 
         .selected {
@@ -188,15 +187,12 @@
                     targetSlot.style.backgroundImage = selectedPiece.style.backgroundImage;
                     targetSlot.style.backgroundPosition = selectedPiece.style.backgroundPosition;
 
-                    selectedPiece.classList.add('animation');
+                    selectedPiece.style.opacity = '0'; // Aplicar la animación de desvanecimiento
                     setTimeout(() => {
-                        targetSlot.style.transition = 'transform 0.3s ease';
-                        selectedPiece.classList.remove('animation');
-                        targetSlot.style.transform = 'scale(0)'; // Animación de desvanecimiento
                         selectedPiece.parentNode.removeChild(selectedPiece);
                         selectedPiece = null;
                         checkWin();
-                    }, 100); // Tiempo adicional para animación
+                    }, 500); // Duración de la animación de desvanecimiento
                 } else {
                     targetSlot.style.backgroundColor = 'red';
                     setTimeout(() => targetSlot.style.backgroundColor = '', 1000); // Tiempo reducido a 1 segundo
@@ -218,17 +214,12 @@
             });
 
             if (isSolved && piecesContainer.children.length === 0) {
-                puzzleBoard.innerHTML = ''; // Limpia el tablero
-                const image = document.createElement('div');
-                image.classList.add('puzzle-piece');
-                image.style.backgroundImage = `url(${imgSrc})`;
-                image.style.backgroundSize = '300px 300px'; // Asegura que la imagen ocupe todo el tablero
-                image.style.width = '300px';
-                image.style.height = '300px';
-                puzzleBoard.appendChild(image);
+                // Mostrar la imagen completa en el tablero
+                puzzleBoard.innerHTML = `<div class="puzzle-piece" style="background-image: url(${imgSrc}); background-position: 0 0; background-size: 300px 300px; width: 100%; height: 100%;"></div>`;
 
                 setTimeout(() => {
                     message.style.display = 'flex'; // Mostrar el mensaje al completar el rompecabezas
+
                     setTimeout(() => {
                         message.style.display = 'none'; // Ocultar el mensaje después de 2 segundos
                         createPuzzle(); // Limpiar el tablero y reiniciar el juego
