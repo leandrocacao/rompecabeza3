@@ -24,7 +24,6 @@
             justify-content: center;
             align-items: center;
             margin-top: 20px;
-            flex-direction: column; /* Apilar verticalmente en dispositivos móviles */
         }
 
         .puzzle-board {
@@ -78,7 +77,7 @@
         }
 
         .message {
-            position: fixed; /* Cambiado a fixed para que se muestre en toda la pantalla */
+            position: fixed; 
             top: 0;
             left: 0;
             width: 100%;
@@ -94,23 +93,35 @@
             box-sizing: border-box;
             border-radius: 5px;
             z-index: 1000;
-            display: none; /* Inicialmente oculto */
+            display: none; 
         }
 
-        /* Estilos para dispositivos móviles */
+        /* Estilos específicos para dispositivos móviles */
         @media (max-width: 600px) {
             .main-container {
-                flex-direction: column; /* Apilar verticalmente en dispositivos móviles */
+                flex-direction: column; 
             }
 
             .puzzle-board, .pieces-container {
-                width: 100%; /* Ajustar el tamaño al 100% del contenedor */
-                height: auto; /* Ajustar la altura automáticamente */
+                width: 100%; 
+                height: auto; 
+            }
+
+            .puzzle-board {
+                grid-template-columns: repeat(3, 1fr); 
+                grid-template-rows: repeat(3, auto); 
+                gap: 2px;
+            }
+
+            .pieces-container {
+                grid-template-columns: repeat(3, 1fr); 
+                grid-gap: 10px;
+                margin: 0;
             }
 
             .puzzle-piece {
-                width: 90px; /* Ajustar el tamaño de las piezas para móviles */
-                height: 90px;
+                width: 100%; 
+                height: auto; 
             }
         }
     </style>
@@ -133,7 +144,6 @@
         const message = document.getElementById('message');
         let pieces = [];
         let emptySlots = [];
-        let selectedPiece = null;
 
         function createPuzzle() {
             const order = [...Array(9).keys()];
@@ -141,7 +151,7 @@
 
             puzzleBoard.innerHTML = ''; 
             piecesContainer.innerHTML = ''; 
-            message.style.display = 'none'; // Asegurarse de que el mensaje esté oculto al iniciar
+            message.style.display = 'none'; 
             pieces = [];
             emptySlots = [];
 
@@ -149,7 +159,8 @@
                 const slot = document.createElement('div');
                 slot.classList.add('puzzle-piece');
                 slot.dataset.index = i;
-                slot.addEventListener('click', placePiece);
+                slot.addEventListener('dragover', dragOver);
+                slot.addEventListener('drop', drop);
                 puzzleBoard.appendChild(slot);
                 emptySlots.push(slot);
 
@@ -161,36 +172,59 @@
                 const y = Math.floor(order[i] / 3) * -100;
                 piece.style.backgroundPosition = `${x}px ${y}px`;
 
+                piece.draggable = true;
                 piece.dataset.index = order[i];
-                piece.addEventListener('click', selectPiece);
+                piece.addEventListener('dragstart', dragStart);
+                piece.addEventListener('touchstart', touchStart, {passive: true});
+                piece.addEventListener('touchend', touchEnd, {passive: true});
 
                 piecesContainer.appendChild(piece);
                 pieces.push(piece);
             }
         }
 
-        function selectPiece(e) {
-            selectedPiece = e.target;
+        let draggedPiece = null;
+
+        function dragStart(e) {
+            draggedPiece = e.target;
+            e.dataTransfer.setData('text/plain', ''); 
         }
 
-        function placePiece(e) {
-            if (selectedPiece) {
-                const targetSlot = e.target;
+        function touchStart(e) {
+            draggedPiece = e.target;
+        }
 
-                const pieceIndex = parseInt(selectedPiece.dataset.index);
+        function touchEnd(e) {
+            if (draggedPiece) {
+                const touch = e.changedTouches[0];
+                const x = touch.clientX - puzzleBoard.getBoundingClientRect().left;
+                const y = touch.clientY - puzzleBoard.getBoundingClientRect().top;
+                draggedPiece.style.left = `${x}px`;
+                draggedPiece.style.top = `${y}px`;
+                draggedPiece = null;
+            }
+        }
+
+        function dragOver(e) {
+            e.preventDefault(); 
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            const targetSlot = e.target;
+
+            if (draggedPiece && targetSlot.classList.contains('puzzle-piece')) {
+                const pieceIndex = parseInt(draggedPiece.dataset.index);
                 const slotIndex = parseInt(targetSlot.dataset.index);
 
                 if (pieceIndex === slotIndex) {
-                    // Encajar la pieza correctamente
-                    targetSlot.style.backgroundImage = selectedPiece.style.backgroundImage;
-                    targetSlot.style.backgroundPosition = selectedPiece.style.backgroundPosition;
+                    targetSlot.style.backgroundImage = draggedPiece.style.backgroundImage;
+                    targetSlot.style.backgroundPosition = draggedPiece.style.backgroundPosition;
 
-                    // Remover la pieza del conjunto de piezas al colocarla en el tablero
-                    selectedPiece.parentNode.removeChild(selectedPiece);
-                    selectedPiece = null; // Limpiar referencia para evitar problemas
-                    checkWin(); // Comprobar si el rompecabezas está completo
+                    draggedPiece.parentNode.removeChild(draggedPiece);
+                    draggedPiece = null; 
+                    checkWin(); 
                 } else {
-                    // Marcar error
                     targetSlot.style.backgroundColor = 'red';
                     setTimeout(() => targetSlot.style.backgroundColor = '', 3000);
                 }
@@ -203,34 +237,31 @@
             emptySlots.forEach((slot, index) => {
                 const slotIndex = parseInt(slot.dataset.index);
                 const bgPosition = slot.style.backgroundPosition;
-                const correctPosition = `${(slotIndex % 3) * -100}px ${Math.floor(slotIndex / 3) * -100}px`;
+                const correctPosition = `${(slotIndex % 3) * -100}px ${(Math.floor(slotIndex / 3) * -100)}px`;
 
                 if (bgPosition !== correctPosition) {
                     isSolved = false;
                 }
             });
 
-            // Verificar si el contenedor de piezas está vacío y si el rompecabezas está resuelto
             if (isSolved && piecesContainer.children.length === 0) {
-                message.style.display = 'flex'; // Mostrar el mensaje al completar el rompecabezas
+                message.style.display = 'flex'; 
 
                 setTimeout(() => {
-                    message.style.display = 'none'; // Ocultar el mensaje después de 3 segundos
-                    createPuzzle(); // Limpiar el tablero y reiniciar el juego
-                }, 3000); // Tiempo que se muestra el mensaje
+                    message.style.display = 'none'; 
+                    createPuzzle(); 
+                }, 3000); 
             }
         }   
 
-        // Botón para reiniciar el juego
         document.getElementById('restart').addEventListener('click', createPuzzle);
 
-        // Botón para volver a la página de inicio
         document.getElementById('back').addEventListener('click', () => {
-            window.location.href = 'index.html'; // Cambia 'index.html' por la ruta de tu página de inicio
+            window.location.href = 'index.html'; 
         });
 
-        // Iniciar el juego
         createPuzzle();
     </script>
+
 </body>
 </html>
