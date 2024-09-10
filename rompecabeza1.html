@@ -31,7 +31,9 @@
             gap: 2px;
             border: 3px solid #ff9800;
             background-color: #fffde7; 
-            position: relative; /* Asegura que el contenedor de la imagen completa se posicione correctamente */
+            position: relative;
+            overflow: hidden; /* Asegura que la imagen completa no se desborde del tablero */
+            transition: background 0.5s ease; /* Transición para la imagen completa */
         }
 
         .pieces-container {
@@ -55,11 +57,16 @@
             background-size: 300px 300px; 
             border: 2px solid #0288d1; 
             border-radius: 5px;
+            transition: opacity 0.5s ease; /* Animación de desvanecimiento al encajar */
         }
 
         .selected {
             border: 3px solid #ff9800;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .puzzle-piece.hidden {
+            opacity: 0;
         }
 
         button {
@@ -97,18 +104,6 @@
             display: none; /* Inicialmente oculto */
         }
 
-        .full-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('images/puzzle1.jpg'); /* Imagen completa del rompecabezas */
-            background-size: cover;
-            background-position: center;
-            display: none; /* Inicialmente oculto */
-        }
-
         /* Estilos para dispositivos móviles */
         @media (max-width: 600px) {
             .puzzle-board, .pieces-container {
@@ -127,11 +122,8 @@
     </style>
 </head>
 <body>
-    <h1>Rompecabezas</h1>
     <div class="main-container">
-        <div id="puzzle-board" class="puzzle-board">
-            <div id="full-image" class="full-image"></div>
-        </div>
+        <div id="puzzle-board" class="puzzle-board"></div>
         <div id="pieces-container" class="pieces-container"></div>
     </div>
     <button id="restart">Reiniciar</button>
@@ -144,7 +136,6 @@
         const puzzleBoard = document.getElementById('puzzle-board');
         const piecesContainer = document.getElementById('pieces-container');
         const message = document.getElementById('message');
-        const fullImage = document.getElementById('full-image');
         let pieces = [];
         let emptySlots = [];
         let selectedPiece = null;
@@ -155,7 +146,6 @@
 
             puzzleBoard.innerHTML = ''; 
             piecesContainer.innerHTML = ''; 
-            fullImage.style.display = 'none'; // Asegurarse de que la imagen completa esté oculta al iniciar
             message.style.display = 'none'; // Asegurarse de que el mensaje esté oculto al iniciar
             pieces = [];
             emptySlots = [];
@@ -203,7 +193,9 @@
                     targetSlot.style.backgroundImage = selectedPiece.style.backgroundImage;
                     targetSlot.style.backgroundPosition = selectedPiece.style.backgroundPosition;
 
-                    selectedPiece.parentNode.removeChild(selectedPiece);
+                    selectedPiece.classList.add('hidden');
+                    setTimeout(() => selectedPiece.parentNode.removeChild(selectedPiece), 500); // Tiempo de animación de desvanecimiento
+
                     selectedPiece = null;
                     checkWin();
                 } else {
@@ -227,14 +219,19 @@
             });
 
             if (isSolved && piecesContainer.children.length === 0) {
-                fullImage.style.display = 'block'; // Mostrar la imagen completa
+                // Transición a la imagen completa
+                puzzleBoard.style.backgroundImage = `url(${imgSrc})`;
+                puzzleBoard.style.backgroundSize = '300px 300px'; // Ajusta el tamaño al del tablero
+                puzzleBoard.style.backgroundPosition = '0 0'; // Ajusta la posición de la imagen
+
                 setTimeout(() => {
                     message.style.display = 'flex'; // Mostrar el mensaje de felicitación
-                    setTimeout(() => {
-                        message.style.display = 'none'; // Ocultar el mensaje después de 2 segundos
-                        createPuzzle(); // Limpiar el tablero y reiniciar el juego
-                    }, 2000); // Tiempo que se muestra el mensaje
-                }, 2000); // Tiempo que se muestra la imagen completa
+                }, 2000); // Mostrar el mensaje después de 2 segundos
+
+                setTimeout(() => {
+                    message.style.display = 'none'; // Ocultar el mensaje después de 2 segundos
+                    createPuzzle(); // Limpiar el tablero y reiniciar el juego
+                }, 4000); // Tiempo total de 2s de imagen completa + 2s de mensaje de felicitación
             }
         }
 
