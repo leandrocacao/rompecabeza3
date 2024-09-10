@@ -50,6 +50,7 @@
             border: 3px solid #00796b; 
             background-color: #f1f8e9;
             padding: 10px;
+            position: relative; 
         }
 
         .puzzle-piece {
@@ -59,11 +60,6 @@
             background-size: 300px 300px; 
             border: 2px solid #0288d1; 
             border-radius: 5px;
-        }
-
-        .selected {
-            border: 3px solid #ff9800;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
         }
 
         button {
@@ -96,24 +92,38 @@
             text-align: center;
             padding: 20px;
             box-sizing: border-box;
+            border-radius: 5px;
             z-index: 1000;
-            display: none;
+            display: none; 
         }
 
         /* Estilos para dispositivos móviles */
         @media (max-width: 600px) {
             .main-container {
-                flex-direction: column;
+                flex-direction: column; 
             }
 
             .puzzle-board, .pieces-container {
-                width: 100%;
-                height: auto;
+                width: 100%; 
+                height: auto; 
             }
 
             .puzzle-piece {
-                width: 90px;
-                height: 90px;
+                width: 28vw; /* Ajustar tamaño relativo a la pantalla en vista móvil */
+                height: 28vw; /* Asegurar que las piezas mantengan proporción */
+            }
+
+            .puzzle-board {
+                width: 90vw;
+                height: 90vw;
+                grid-template-columns: repeat(3, 1fr); /* Asegurar que las casillas sean flexibles */
+                grid-template-rows: repeat(3, 1fr);
+            }
+
+            .pieces-container {
+                width: 95vw;
+                height: auto;
+                grid-template-columns: repeat(3, 1fr); 
             }
         }
     </style>
@@ -144,7 +154,7 @@
 
             puzzleBoard.innerHTML = ''; 
             piecesContainer.innerHTML = ''; 
-            message.style.display = 'none';
+            message.style.display = 'none'; 
             pieces = [];
             emptySlots = [];
 
@@ -174,10 +184,10 @@
 
         function selectPiece(e) {
             if (selectedPiece) {
-                selectedPiece.classList.remove('selected');
+                selectedPiece.style.border = '2px solid #0288d1'; 
             }
             selectedPiece = e.target;
-            selectedPiece.classList.add('selected');
+            selectedPiece.style.border = '4px solid #ff9800'; 
         }
 
         function placePiece(e) {
@@ -192,11 +202,11 @@
                     targetSlot.style.backgroundPosition = selectedPiece.style.backgroundPosition;
 
                     selectedPiece.parentNode.removeChild(selectedPiece);
-                    selectedPiece = null;
+                    selectedPiece = null; 
                     checkWin();
                 } else {
                     targetSlot.style.backgroundColor = 'red';
-                    setTimeout(() => targetSlot.style.backgroundColor = '', 1000);
+                    setTimeout(() => targetSlot.style.backgroundColor = '', 3000);
                 }
             }
         }
@@ -218,15 +228,16 @@
                 message.style.display = 'flex';
 
                 setTimeout(() => {
-                    message.style.display = 'none';
-                    createPuzzle();
-                }, 3000);
+                    message.style.display = 'none'; 
+                    createPuzzle(); 
+                }, 3000); 
             }
-        }
+        }   
 
         document.getElementById('restart').addEventListener('click', createPuzzle);
+
         document.getElementById('back').addEventListener('click', () => {
-            window.location.href = 'index.html';
+            window.location.href = 'index.html'; 
         });
 
         createPuzzle();
