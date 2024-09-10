@@ -24,7 +24,6 @@
             justify-content: center;
             align-items: center;
             margin-top: 20px;
-            flex-direction: column;
         }
 
         .puzzle-board {
@@ -50,6 +49,7 @@
             border: 3px solid #00796b; 
             background-color: #f1f8e9;
             padding: 10px;
+            position: relative; 
         }
 
         .puzzle-piece {
@@ -59,11 +59,6 @@
             background-size: 300px 300px; 
             border: 2px solid #0288d1; 
             border-radius: 5px;
-        }
-
-        .selected {
-            border: 3px solid #ff9800;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
         }
 
         button {
@@ -82,7 +77,7 @@
         }
 
         .message {
-            position: fixed;
+            position: fixed; /* Cambiado a fixed para que se muestre en toda la pantalla */
             top: 0;
             left: 0;
             width: 100%;
@@ -96,25 +91,9 @@
             text-align: center;
             padding: 20px;
             box-sizing: border-box;
+            border-radius: 5px;
             z-index: 1000;
-            display: none;
-        }
-
-        /* Estilos para dispositivos móviles */
-        @media (max-width: 600px) {
-            .main-container {
-                flex-direction: column;
-            }
-
-            .puzzle-board, .pieces-container {
-                width: 100%;
-                height: auto;
-            }
-
-            .puzzle-piece {
-                width: 90px;
-                height: 90px;
-            }
+            display: none; /* Inicialmente oculto */
         }
     </style>
 </head>
@@ -136,7 +115,6 @@
         const message = document.getElementById('message');
         let pieces = [];
         let emptySlots = [];
-        let selectedPiece = null;
 
         function createPuzzle() {
             const order = [...Array(9).keys()];
@@ -144,7 +122,7 @@
 
             puzzleBoard.innerHTML = ''; 
             piecesContainer.innerHTML = ''; 
-            message.style.display = 'none';
+            message.style.display = 'none'; // Asegurarse de que el mensaje esté oculto al iniciar
             pieces = [];
             emptySlots = [];
 
@@ -152,7 +130,8 @@
                 const slot = document.createElement('div');
                 slot.classList.add('puzzle-piece');
                 slot.dataset.index = i;
-                slot.addEventListener('click', placePiece);
+                slot.addEventListener('dragover', dragOver);
+                slot.addEventListener('drop', drop);
                 puzzleBoard.appendChild(slot);
                 emptySlots.push(slot);
 
@@ -164,39 +143,47 @@
                 const y = Math.floor(order[i] / 3) * -100;
                 piece.style.backgroundPosition = `${x}px ${y}px`;
 
+                piece.draggable = true;
                 piece.dataset.index = order[i];
-                piece.addEventListener('click', selectPiece);
+                piece.addEventListener('dragstart', dragStart);
 
                 piecesContainer.appendChild(piece);
                 pieces.push(piece);
             }
         }
 
-        function selectPiece(e) {
-            if (selectedPiece) {
-                selectedPiece.classList.remove('selected');
-            }
-            selectedPiece = e.target;
-            selectedPiece.classList.add('selected');
+        let draggedPiece = null;
+
+        function dragStart(e) {
+            draggedPiece = e.target;
         }
 
-        function placePiece(e) {
-            if (selectedPiece) {
-                const targetSlot = e.target;
+        function dragOver(e) {
+            e.preventDefault(); // Permitir el drop
+        }
 
-                const pieceIndex = parseInt(selectedPiece.dataset.index);
+        function drop(e) {
+            e.preventDefault();
+            const targetSlot = e.target;
+
+            if (draggedPiece && targetSlot.classList.contains('puzzle-piece')) {
+                // Verificar si la pieza encaja correctamente
+                const pieceIndex = parseInt(draggedPiece.dataset.index);
                 const slotIndex = parseInt(targetSlot.dataset.index);
 
                 if (pieceIndex === slotIndex) {
-                    targetSlot.style.backgroundImage = selectedPiece.style.backgroundImage;
-                    targetSlot.style.backgroundPosition = selectedPiece.style.backgroundPosition;
+                    // Encajar la pieza correctamente
+                    targetSlot.style.backgroundImage = draggedPiece.style.backgroundImage;
+                    targetSlot.style.backgroundPosition = draggedPiece.style.backgroundPosition;
 
-                    selectedPiece.parentNode.removeChild(selectedPiece);
-                    selectedPiece = null;
-                    checkWin();
+                    // Remover la pieza del conjunto de piezas al colocarla en el tablero
+                    draggedPiece.parentNode.removeChild(draggedPiece);
+                    draggedPiece = null; // Limpiar referencia para evitar problemas
+                    checkWin(); // Comprobar si el rompecabezas está completo
                 } else {
+                    // Marcar error
                     targetSlot.style.backgroundColor = 'red';
-                    setTimeout(() => targetSlot.style.backgroundColor = '', 1000);
+                    setTimeout(() => targetSlot.style.backgroundColor = '', 3000);
                 }
             }
         }
@@ -207,28 +194,33 @@
             emptySlots.forEach((slot, index) => {
                 const slotIndex = parseInt(slot.dataset.index);
                 const bgPosition = slot.style.backgroundPosition;
-                const correctPosition = `${(slotIndex % 3) * -100}px ${Math.floor(slotIndex / 3) * -100}px`;
+                const correctPosition = `${(slotIndex % 3) * -100}px ${(Math.floor(slotIndex / 3) * -100)}px`;
 
                 if (bgPosition !== correctPosition) {
                     isSolved = false;
                 }
             });
 
+            // Verificar si el contenedor de piezas está vacío y si el rompecabezas está resuelto
             if (isSolved && piecesContainer.children.length === 0) {
-                message.style.display = 'flex';
+                message.style.display = 'flex'; // Mostrar el mensaje al completar el rompecabezas
 
                 setTimeout(() => {
-                    message.style.display = 'none';
-                    createPuzzle();
-                }, 3000);
+                    message.style.display = 'none'; // Ocultar el mensaje después de 3 segundos
+                    createPuzzle(); // Limpiar el tablero y reiniciar el juego
+                }, 3000); // Tiempo que se muestra el mensaje
             }
-        }
+        }   
 
+        // Botón para reiniciar el juego
         document.getElementById('restart').addEventListener('click', createPuzzle);
+
+        // Botón para volver a la página de inicio
         document.getElementById('back').addEventListener('click', () => {
-            window.location.href = 'index.html';
+            window.location.href = 'index.html'; // Cambia 'index.html' por la ruta de tu página de inicio
         });
 
+        // Iniciar el juego
         createPuzzle();
     </script>
 </body>
