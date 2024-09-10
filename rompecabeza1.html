@@ -24,6 +24,7 @@
             justify-content: center;
             align-items: center;
             margin-top: 20px;
+            flex-direction: column;
         }
 
         .puzzle-board {
@@ -43,22 +44,21 @@
             grid-gap: 10px;
             justify-content: center;
             align-items: center;
-            width: 340px; 
-            height: 330px; 
-            margin-left: 20px;
+            width: 300px; 
+            height: 300px; 
             border: 3px solid #00796b; 
             background-color: #f1f8e9;
             padding: 10px;
-            position: relative; 
+            margin-top: 20px;
         }
 
         .puzzle-piece {
-        width: 98px; /* Ajustado al tamaño total del tablero */
-        height: 98px;
-        cursor: pointer;
-        background-size: 300px 300px; 
-        border: 2px solid #0288d1; 
-        border-radius: 5px;
+            width: 98px; /* Ajustado al tamaño total del tablero */
+            height: 98px;
+            cursor: pointer;
+            background-size: 300px 300px; 
+            border: 2px solid #0288d1; 
+            border-radius: 5px;
         }
 
         .selected {
@@ -69,7 +69,7 @@
         button {
             padding: 10px 20px;
             font-size: 16px;
-            margin-top: 55px;
+            margin-top: 20px;
             cursor: pointer;
             background-color: #ff9800;
             color: white;
@@ -101,11 +101,25 @@
             display: none; /* Inicialmente oculto */
         }
 
-</style>
+        /* Estilos para dispositivos móviles */
+        @media (max-width: 600px) {
+            .puzzle-board, .pieces-container {
+                width: 100%;
+                height: auto;
+                max-width: 300px; /* Limitar el ancho máximo */
+            }
+            .puzzle-piece {
+                width: 90px; /* Ajustar el tamaño de las piezas */
+                height: 90px;
+            }
+            .main-container {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Rompecabezas de Blippi #2</h1>
+    <h1>Rompecabezas de Blippi #1</h1>
     <div class="main-container">
         <div id="puzzle-board" class="puzzle-board"></div>
         <div id="pieces-container" class="pieces-container"></div>
@@ -116,12 +130,13 @@
     <div id="message" class="message">¡Felicidades! Has completado el rompecabezas.</div>
 
     <script>
-        const imgSrc = 'images/puzzle2.jpg'; 
+        const imgSrc = 'images/puzzle1.jpg'; 
         const puzzleBoard = document.getElementById('puzzle-board');
         const piecesContainer = document.getElementById('pieces-container');
         const message = document.getElementById('message');
         let pieces = [];
         let emptySlots = [];
+        let selectedPiece = null;
 
         function createPuzzle() {
             const order = [...Array(9).keys()];
@@ -137,8 +152,7 @@
                 const slot = document.createElement('div');
                 slot.classList.add('puzzle-piece');
                 slot.dataset.index = i;
-                slot.addEventListener('dragover', dragOver);
-                slot.addEventListener('drop', drop);
+                slot.addEventListener('click', placePiece);
                 puzzleBoard.appendChild(slot);
                 emptySlots.push(slot);
 
@@ -150,9 +164,8 @@
                 const y = Math.floor(order[i] / 3) * -100;
                 piece.style.backgroundPosition = `${x}px ${y}px`;
 
-                piece.draggable = true;
                 piece.dataset.index = order[i];
-                piece.addEventListener('dragstart', dragStart);
+                piece.addEventListener('click', selectPiece);
 
                 piecesContainer.appendChild(piece);
                 pieces.push(piece);
@@ -160,43 +173,28 @@
         }
 
         function selectPiece(e) {
-        if (selectedPiece) {
-            selectedPiece.classList.remove('selected');
-        }
-        selectedPiece = e.target;
-        selectedPiece.classList.add('selected');
-    }
-
-        let draggedPiece = null;
-
-        function dragStart(e) {
-            draggedPiece = e.target;
+            if (selectedPiece) {
+                selectedPiece.classList.remove('selected');
+            }
+            selectedPiece = e.target;
+            selectedPiece.classList.add('selected');
         }
 
-        function dragOver(e) {
-            e.preventDefault(); // Permitir el drop
-        }
+        function placePiece(e) {
+            if (selectedPiece) {
+                const targetSlot = e.target;
 
-        function drop(e) {
-            e.preventDefault();
-            const targetSlot = e.target;
-
-            if (draggedPiece && targetSlot.classList.contains('puzzle-piece')) {
-                // Verificar si la pieza encaja correctamente
-                const pieceIndex = parseInt(draggedPiece.dataset.index);
+                const pieceIndex = parseInt(selectedPiece.dataset.index);
                 const slotIndex = parseInt(targetSlot.dataset.index);
 
                 if (pieceIndex === slotIndex) {
-                    // Encajar la pieza correctamente
-                    targetSlot.style.backgroundImage = draggedPiece.style.backgroundImage;
-                    targetSlot.style.backgroundPosition = draggedPiece.style.backgroundPosition;
+                    targetSlot.style.backgroundImage = selectedPiece.style.backgroundImage;
+                    targetSlot.style.backgroundPosition = selectedPiece.style.backgroundPosition;
 
-                    // Remover la pieza del conjunto de piezas al colocarla en el tablero
-                    draggedPiece.parentNode.removeChild(draggedPiece);
-                    draggedPiece = null; // Limpiar referencia para evitar problemas
-                    checkWin(); // Comprobar si el rompecabezas está completo
+                    selectedPiece.parentNode.removeChild(selectedPiece);
+                    selectedPiece = null;
+                    checkWin();
                 } else {
-                    // Marcar error
                     targetSlot.style.backgroundColor = 'red';
                     setTimeout(() => targetSlot.style.backgroundColor = '', 3000);
                 }
@@ -216,7 +214,6 @@
                 }
             });
 
-            // Verificar si el contenedor de piezas está vacío y si el rompecabezas está resuelto
             if (isSolved && piecesContainer.children.length === 0) {
                 message.style.display = 'flex'; // Mostrar el mensaje al completar el rompecabezas
 
@@ -225,17 +222,13 @@
                     createPuzzle(); // Limpiar el tablero y reiniciar el juego
                 }, 3000); // Tiempo que se muestra el mensaje
             }
-        }   
+        }
 
-        // Botón para reiniciar el juego
         document.getElementById('restart').addEventListener('click', createPuzzle);
-
-        // Botón para volver a la página de inicio
         document.getElementById('back').addEventListener('click', () => {
             window.location.href = 'index.html'; // Cambia 'index.html' por la ruta de tu página de inicio
         });
 
-        // Iniciar el juego
         createPuzzle();
     </script>
 </body>
