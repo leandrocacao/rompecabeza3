@@ -17,6 +17,7 @@
         h1 {
             color: #00796b; /* Verde oscuro */
             font-size: 40px; /* Tamaño de título aumentado */
+            margin-top: 10px; /* Margen superior ajustado */
             margin-bottom: 20px;
         }
 
@@ -28,6 +29,7 @@
 
         .puzzle-options {
             display: flex;
+            flex-wrap: wrap; /* Permite múltiples filas de rompecabezas */
             justify-content: space-between; /* Alinea horizontalmente y espacia elementos */
             gap: 30px; /* Espaciado entre opciones */
         }
@@ -70,6 +72,7 @@
             font-size: 18px;
             color: #00796b; /* Verde oscuro */
         }
+
         /* CSS para dispositivos móviles */
         @media (max-width: 600px) {
             .puzzle-options {
@@ -84,10 +87,17 @@
             }
         }
 
+        /* CSS para orientación horizontal */
+        @media (orientation: landscape) {
+            .puzzle-option {
+                width: 80%; /* Ajusta según tus necesidades */
+                height: auto; /* Ajusta la altura proporcionalmente */
+            }
+        }
     </style>
 </head>
 <body>
-    <h1 style="margin-top: 10px;">¡Hola Theo, selecciona tu Rompecabezas!</h1>
+    <h1>¡Hola Theo, selecciona tu Rompecabezas!</h1>
     
     <div class="main-container">
         <!-- Primera fila de rompecabezas -->
@@ -95,22 +105,22 @@
             <div class="puzzle-option" onclick="location.href='rompecabeza1.html';">
                 <img src="images/puzzle.jpg" alt="Rompecabeza 1">
                 <h2>ROMPECABEZA #1</h2>
-                <p<p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
+                <p><strong>Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
             </div>
             <div class="puzzle-option" onclick="location.href='rompecabeza2.html';">
                 <img src="images/puzzle2.jpg" alt="Rompecabeza 2">
                 <h2>ROMPECABEZA #2</h2>
-                <p<p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
+                <p><strong>Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
             </div>
             <div class="puzzle-option" onclick="location.href='rompecabeza3.html';">
                 <img src="images/puzzle3.png" alt="Rompecabeza 3">
                 <h2>ROMPECABEZA #3</h2>
-                <p<p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
+                <p><strong>Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
             </div>
             <div class="puzzle-option" onclick="location.href='rompecabeza4.html';">
                 <img src="images/puzzle4.jpg" alt="Rompecabeza 4">
                 <h2>ROMPECABEZA #4</h2>
-                <p<p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
+                <p><strong>Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
             </div>
         </div>
 
@@ -119,22 +129,22 @@
             <div class="puzzle-option" onclick="location.href='rompecabeza5.html';">
                 <img src="images/puzzle5.avif" alt="Rompecabeza 5">
                 <h2>ROMPECABEZA #5</h2>
-                <p<p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
+                <p><strong>Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
             </div>
             <div class="puzzle-option" onclick="location.href='rompecabeza6.html';">
                 <img src="images/puzzle6.jpg" alt="Rompecabeza 6">
                 <h2>ROMPECABEZA #6</h2>
-                <p<p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
+                <p><strong>Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
             </div>
             <div class="puzzle-option" onclick="location.href='rompecabeza7.html';">
                 <img src="images/puzzle7.jpg" alt="Rompecabeza 7">
                 <h2>ROMPECABEZA #7</h2>
-                <p<p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
+                <p><strong>Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
             </div>
             <div class="puzzle-option" onclick="location.href='rompecabeza8.html';">
                 <img src="images/puzzle8.jpg" alt="Rompecabeza 8">
                 <h2>ROMPECABEZA #8</h2>
-                <p<p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
+                <p><strong>Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
             </div>
         </div>
     </div>
@@ -143,5 +153,18 @@
         <p>&copy; 2024 Tu Sitio de Rompecabezas. Todos los derechos reservados.</p>
     </footer>
     
+    <script>
+        function checkOrientation() {
+            if (window.innerHeight > window.innerWidth) {
+                alert("Por favor, gire su dispositivo a la orientación horizontal para una mejor experiencia.");
+            }
+        }
+
+        window.addEventListener('resize', checkOrientation);
+        window.addEventListener('orientationchange', checkOrientation);
+
+        // Inicializa la verificación al cargar la página
+        checkOrientation();
+    </script>
 </body>
 </html>
