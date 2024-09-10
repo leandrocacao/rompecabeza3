@@ -28,7 +28,7 @@
         }
 
         .puzzle-board {
-            width: 300px;
+            width: 300px; 
             height: 300px;
             display: grid;
             grid-template-columns: repeat(3, 100px); 
@@ -50,7 +50,7 @@
             border: 3px solid #00796b; 
             background-color: #f1f8e9;
             padding: 10px;
-            position: relative;
+            position: relative; 
         }
 
         .puzzle-piece {
@@ -94,33 +94,42 @@
             box-sizing: border-box;
             border-radius: 5px;
             z-index: 1000;
-            display: none;
+            display: none; 
         }
 
         /* Estilos para dispositivos móviles */
         @media (max-width: 600px) {
-            h1 {
-                display: none; /* Ocultar el encabezado en móviles */
-            }
-
             .main-container {
-                flex-direction: column;
+                flex-direction: column; 
             }
 
             .puzzle-board, .pieces-container {
-                width: 100%;
-                margin-bottom: 20px; /* Añadir espacio entre el tablero y el contenedor */
+                width: 100%; 
+                height: auto; 
             }
 
             .puzzle-piece {
-                width: 90px; 
-                height: 90px;
+                width: 28vw; /* Ajustar tamaño relativo a la pantalla en vista móvil */
+                height: 28vw; /* Asegurar que las piezas mantengan proporción */
+            }
+
+            .puzzle-board {
+                width: 90vw;
+                height: 90vw;
+                grid-template-columns: repeat(3, 1fr); /* Asegurar que las casillas sean flexibles */
+                grid-template-rows: repeat(3, 1fr);
+            }
+
+            .pieces-container {
+                width: 95vw;
+                height: auto;
+                grid-template-columns: repeat(3, 1fr); 
             }
         }
     </style>
 </head>
 <body>
-    <!-- Título removido en la versión móvil -->
+    <h1>Rompecabezas de Blippi #1</h1>
     <div class="main-container">
         <div id="puzzle-board" class="puzzle-board"></div>
         <div id="pieces-container" class="pieces-container"></div>
@@ -141,11 +150,11 @@
 
         function createPuzzle() {
             const order = [...Array(9).keys()];
-            order.sort(() => Math.random() - 0.5);
+            order.sort(() => Math.random() - 0.5); 
 
-            puzzleBoard.innerHTML = '';
-            piecesContainer.innerHTML = '';
-            message.style.display = 'none';
+            puzzleBoard.innerHTML = ''; 
+            piecesContainer.innerHTML = ''; 
+            message.style.display = 'none'; 
             pieces = [];
             emptySlots = [];
 
@@ -174,7 +183,11 @@
         }
 
         function selectPiece(e) {
+            if (selectedPiece) {
+                selectedPiece.style.border = '2px solid #0288d1'; 
+            }
             selectedPiece = e.target;
+            selectedPiece.style.border = '4px solid #ff9800'; 
         }
 
         function placePiece(e) {
@@ -189,7 +202,7 @@
                     targetSlot.style.backgroundPosition = selectedPiece.style.backgroundPosition;
 
                     selectedPiece.parentNode.removeChild(selectedPiece);
-                    selectedPiece = null;
+                    selectedPiece = null; 
                     checkWin();
                 } else {
                     targetSlot.style.backgroundColor = 'red';
@@ -215,15 +228,16 @@
                 message.style.display = 'flex';
 
                 setTimeout(() => {
-                    message.style.display = 'none';
-                    createPuzzle();
-                }, 3000);
+                    message.style.display = 'none'; 
+                    createPuzzle(); 
+                }, 3000); 
             }
         }   
 
         document.getElementById('restart').addEventListener('click', createPuzzle);
+
         document.getElementById('back').addEventListener('click', () => {
-            window.location.href = 'index.html';
+            window.location.href = 'index.html'; 
         });
 
         createPuzzle();
