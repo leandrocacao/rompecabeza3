@@ -70,18 +70,20 @@
             font-size: 18px;
             color: #00796b; /* Verde oscuro */
         }
+        /* CSS para dispositivos móviles */
         @media (max-width: 600px) {
-            .puzzle-option {
-                width: 100%;
-                height: auto;
-                padding: 15px;
+            .puzzle-options {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr); /* 2 rompecabezas por fila */
+                gap: 20px; /* Espaciado entre rompecabezas */
             }
 
-            button {
-                padding: 15px 25px;
-                font-size: 18px;
+            .puzzle-option {
+                width: 100%; /* Asegura que cada rompecabezas ocupe el 100% del contenedor */
+                height: auto; /* Ajusta la altura de acuerdo al contenido */
             }
         }
+
     </style>
 </head>
 <body>
