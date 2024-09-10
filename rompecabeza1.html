@@ -8,13 +8,13 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #e0f7fa; 
+            background-color: #e0f7fa;
             margin: 0;
             padding: 20px;
         }
 
         h1 {
-            color: #00796b; 
+            color: #00796b;
             font-size: 32px;
             margin-bottom: 20px;
         }
@@ -24,41 +24,40 @@
             justify-content: center;
             align-items: center;
             margin-top: 20px;
-            flex-direction: column;
         }
 
         .puzzle-board {
-            width: 300px; 
+            width: 300px;
             height: 300px;
             display: grid;
-            grid-template-columns: repeat(3, 100px); 
-            grid-template-rows: repeat(3, 100px); 
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
             gap: 2px;
             border: 3px solid #ff9800;
-            background-color: #fffde7; 
+            background-color: #fffde7;
         }
 
         .pieces-container {
             display: grid;
-            grid-template-columns: repeat(3, 100px); 
+            grid-template-columns: repeat(3, 100px);
             grid-gap: 10px;
             justify-content: center;
             align-items: center;
-            width: 340px; 
-            height: 330px; 
+            width: 340px;
+            height: 330px;
             margin-left: 20px;
-            border: 3px solid #00796b; 
+            border: 3px solid #00796b;
             background-color: #f1f8e9;
             padding: 10px;
-            position: relative; 
+            position: relative;
         }
 
         .puzzle-piece {
             width: 95px;
             height: 95px;
             cursor: pointer;
-            background-size: 300px 300px; 
-            border: 2px solid #0288d1; 
+            background-size: 300px 300px;
+            border: 2px solid #0288d1;
             border-radius: 5px;
         }
 
@@ -94,36 +93,37 @@
             box-sizing: border-box;
             border-radius: 5px;
             z-index: 1000;
-            display: none; 
+            display: none;
         }
 
         /* Estilos para dispositivos móviles */
         @media (max-width: 600px) {
             .main-container {
-                flex-direction: column; 
-            }
-
-            .puzzle-board, .pieces-container {
-                width: 100%; 
-                height: auto; 
-            }
-
-            .puzzle-piece {
-                width: 28vw; /* Ajustar tamaño relativo a la pantalla en vista móvil */
-                height: 28vw; /* Asegurar que las piezas mantengan proporción */
+                flex-direction: column;
+                gap: 20px; /* Espacio entre el tablero y el contenedor */
             }
 
             .puzzle-board {
-                width: 90vw;
-                height: 90vw;
-                grid-template-columns: repeat(3, 1fr); /* Asegurar que las casillas sean flexibles */
-                grid-template-rows: repeat(3, 1fr);
+                width: 90%; /* Ajustar el tamaño del tablero en móviles */
+                height: auto;
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(3, auto);
             }
 
             .pieces-container {
-                width: 95vw;
+                width: 90%; /* Ajustar el tamaño del contenedor de piezas en móviles */
                 height: auto;
-                grid-template-columns: repeat(3, 1fr); 
+                grid-template-columns: repeat(3, 1fr);
+                grid-gap: 15px; /* Espacio más amplio entre las piezas */
+            }
+
+            .puzzle-piece {
+                width: 100%; /* Ajustar tamaño de las piezas */
+                height: auto;
+            }
+
+            button {
+                margin-top: 20px;
             }
         }
     </style>
@@ -140,7 +140,7 @@
     <div id="message" class="message">¡Felicidades! Has completado el rompecabezas.</div>
 
     <script>
-        const imgSrc = 'images/puzzle.jpg'; 
+        const imgSrc = 'images/puzzle.jpg';
         const puzzleBoard = document.getElementById('puzzle-board');
         const piecesContainer = document.getElementById('pieces-container');
         const message = document.getElementById('message');
@@ -150,11 +150,11 @@
 
         function createPuzzle() {
             const order = [...Array(9).keys()];
-            order.sort(() => Math.random() - 0.5); 
+            order.sort(() => Math.random() - 0.5);
 
-            puzzleBoard.innerHTML = ''; 
-            piecesContainer.innerHTML = ''; 
-            message.style.display = 'none'; 
+            puzzleBoard.innerHTML = '';
+            piecesContainer.innerHTML = '';
+            message.style.display = 'none';
             pieces = [];
             emptySlots = [];
 
@@ -184,10 +184,10 @@
 
         function selectPiece(e) {
             if (selectedPiece) {
-                selectedPiece.style.border = '2px solid #0288d1'; 
+                selectedPiece.style.border = "2px solid #0288d1"; // Restablecer borde de la pieza anterior
             }
             selectedPiece = e.target;
-            selectedPiece.style.border = '4px solid #ff9800'; 
+            selectedPiece.style.border = "4px solid #ff9800"; // Resaltar la pieza seleccionada
         }
 
         function placePiece(e) {
@@ -200,9 +200,8 @@
                 if (pieceIndex === slotIndex) {
                     targetSlot.style.backgroundImage = selectedPiece.style.backgroundImage;
                     targetSlot.style.backgroundPosition = selectedPiece.style.backgroundPosition;
-
                     selectedPiece.parentNode.removeChild(selectedPiece);
-                    selectedPiece = null; 
+                    selectedPiece = null;
                     checkWin();
                 } else {
                     targetSlot.style.backgroundColor = 'red';
@@ -226,18 +225,16 @@
 
             if (isSolved && piecesContainer.children.length === 0) {
                 message.style.display = 'flex';
-
                 setTimeout(() => {
-                    message.style.display = 'none'; 
-                    createPuzzle(); 
-                }, 3000); 
+                    message.style.display = 'none';
+                    createPuzzle();
+                }, 3000);
             }
-        }   
+        }
 
         document.getElementById('restart').addEventListener('click', createPuzzle);
-
         document.getElementById('back').addEventListener('click', () => {
-            window.location.href = 'index.html'; 
+            window.location.href = 'index.html';
         });
 
         createPuzzle();
