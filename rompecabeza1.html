@@ -11,6 +11,7 @@
             background-color: #e0f7fa; 
             margin: 0;
             padding: 20px;
+            overflow: hidden; /* Oculta el desbordamiento para mantener el contenido estático en dispositivos móviles */
         }
 
         .main-container {
@@ -189,7 +190,7 @@
                     checkWin();
                 } else {
                     targetSlot.style.backgroundColor = 'red';
-                    setTimeout(() => targetSlot.style.backgroundColor = '', 2000); // Tiempo reducido a 2 segundos
+                    setTimeout(() => targetSlot.style.backgroundColor = '', 1000); // Tiempo reducido a 1 segundo
                 }
             }
         }
