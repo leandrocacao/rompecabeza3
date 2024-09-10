@@ -24,7 +24,7 @@
             justify-content: center;
             align-items: center;
             margin-top: 20px;
-            flex-direction: column; /* Apilar verticalmente en dispositivos móviles */
+            flex-direction: column;
         }
 
         .puzzle-board {
@@ -50,7 +50,6 @@
             border: 3px solid #00796b; 
             background-color: #f1f8e9;
             padding: 10px;
-            position: relative; 
         }
 
         .puzzle-piece {
@@ -60,6 +59,11 @@
             background-size: 300px 300px; 
             border: 2px solid #0288d1; 
             border-radius: 5px;
+        }
+
+        .selected {
+            border: 3px solid #ff9800;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
         }
 
         button {
@@ -78,7 +82,7 @@
         }
 
         .message {
-            position: fixed; /* Cambiado a fixed para que se muestre en toda la pantalla */
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -92,24 +96,23 @@
             text-align: center;
             padding: 20px;
             box-sizing: border-box;
-            border-radius: 5px;
             z-index: 1000;
-            display: none; /* Inicialmente oculto */
+            display: none;
         }
 
         /* Estilos para dispositivos móviles */
         @media (max-width: 600px) {
             .main-container {
-                flex-direction: column; /* Apilar verticalmente en dispositivos móviles */
+                flex-direction: column;
             }
 
             .puzzle-board, .pieces-container {
-                width: 100%; /* Ajustar el tamaño al 100% del contenedor */
-                height: auto; /* Ajustar la altura automáticamente */
+                width: 100%;
+                height: auto;
             }
 
             .puzzle-piece {
-                width: 90px; /* Ajustar el tamaño de las piezas para móviles */
+                width: 90px;
                 height: 90px;
             }
         }
@@ -141,7 +144,7 @@
 
             puzzleBoard.innerHTML = ''; 
             piecesContainer.innerHTML = ''; 
-            message.style.display = 'none'; // Asegurarse de que el mensaje esté oculto al iniciar
+            message.style.display = 'none';
             pieces = [];
             emptySlots = [];
 
@@ -170,7 +173,11 @@
         }
 
         function selectPiece(e) {
+            if (selectedPiece) {
+                selectedPiece.classList.remove('selected');
+            }
             selectedPiece = e.target;
+            selectedPiece.classList.add('selected');
         }
 
         function placePiece(e) {
@@ -181,18 +188,15 @@
                 const slotIndex = parseInt(targetSlot.dataset.index);
 
                 if (pieceIndex === slotIndex) {
-                    // Encajar la pieza correctamente
                     targetSlot.style.backgroundImage = selectedPiece.style.backgroundImage;
                     targetSlot.style.backgroundPosition = selectedPiece.style.backgroundPosition;
 
-                    // Remover la pieza del conjunto de piezas al colocarla en el tablero
                     selectedPiece.parentNode.removeChild(selectedPiece);
-                    selectedPiece = null; // Limpiar referencia para evitar problemas
-                    checkWin(); // Comprobar si el rompecabezas está completo
+                    selectedPiece = null;
+                    checkWin();
                 } else {
-                    // Marcar error
                     targetSlot.style.backgroundColor = 'red';
-                    setTimeout(() => targetSlot.style.backgroundColor = '', 3000);
+                    setTimeout(() => targetSlot.style.backgroundColor = '', 1000);
                 }
             }
         }
@@ -210,26 +214,21 @@
                 }
             });
 
-            // Verificar si el contenedor de piezas está vacío y si el rompecabezas está resuelto
             if (isSolved && piecesContainer.children.length === 0) {
-                message.style.display = 'flex'; // Mostrar el mensaje al completar el rompecabezas
+                message.style.display = 'flex';
 
                 setTimeout(() => {
-                    message.style.display = 'none'; // Ocultar el mensaje después de 3 segundos
-                    createPuzzle(); // Limpiar el tablero y reiniciar el juego
-                }, 3000); // Tiempo que se muestra el mensaje
+                    message.style.display = 'none';
+                    createPuzzle();
+                }, 3000);
             }
-        }   
+        }
 
-        // Botón para reiniciar el juego
         document.getElementById('restart').addEventListener('click', createPuzzle);
-
-        // Botón para volver a la página de inicio
         document.getElementById('back').addEventListener('click', () => {
-            window.location.href = 'index.html'; // Cambia 'index.html' por la ruta de tu página de inicio
+            window.location.href = 'index.html';
         });
 
-        // Iniciar el juego
         createPuzzle();
     </script>
 </body>
