@@ -17,7 +17,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 20px;
+            margin-top: 10px; /* Reducido para que el tablero suba */
             flex-direction: column;
         }
 
@@ -25,30 +25,29 @@
             width: 300px; 
             height: 300px;
             display: grid;
-            grid-template-columns: repeat(3, 100px); 
-            grid-template-rows: repeat(3, 100px); 
-            gap: 2px;
+            grid-template-columns: repeat(3, 1fr); /* Asegura que las casillas ocupen todo el espacio */
+            grid-template-rows: repeat(3, 1fr); 
+            gap: 1px; /* Reducido para menos espacio entre casillas */
             border: 3px solid #ff9800;
             background-color: #fffde7; 
         }
 
         .pieces-container {
             display: grid;
-            grid-template-columns: repeat(3, 100px); 
-            grid-gap: 10px;
+            grid-template-columns: repeat(3, 1fr); /* Misma configuración que el tablero */
+            grid-gap: 1px; 
             justify-content: center;
             align-items: center;
-            width: 300px; 
-            height: 300px; 
+            width: 300px; /* Misma anchura que el tablero */
+            height: 300px; /* Misma altura que el tablero */
             border: 3px solid #00796b; 
             background-color: #f1f8e9;
             padding: 10px;
-            margin-top: 15px; /* Espacio entre tablero y contenedor */
         }
 
         .puzzle-piece {
-            width: 95px;
-            height: 95px;
+            width: 98px; /* Ajustado al tamaño total del tablero */
+            height: 98px;
             cursor: pointer;
             background-size: 300px 300px; 
             border: 2px solid #0288d1; 
@@ -63,7 +62,7 @@
         button {
             padding: 10px 20px;
             font-size: 16px;
-            margin-top: 55px;
+            margin-top: 20px; /* Subido */
             cursor: pointer;
             background-color: #ff9800;
             color: white;
