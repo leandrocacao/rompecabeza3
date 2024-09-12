@@ -3,48 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de Rompecabezas</title>
+    <title>Juego de Rompecabezas Paw Patrol</title>
     <link rel="icon" href="images/logo.jpg" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <style>
     body {
         font-family: Arial, sans-serif;
         text-align: center;
-        background-color: #e0f7fa; /* Celeste suave */
+        background-color: #ADD8E6; /* Azul claro inspirado en Chase */
         margin: 0;
         padding: 20px;
     }
 
     h1 {
-        color: #00796b; /* Verde oscuro */
-        font-size: 40px; /* Tamaño de título aumentado */
+        color: #FF0000; /* Rojo brillante inspirado en Marshall */
+        font-size: 40px;
         margin-bottom: 20px;
     }
 
     .main-container {
         display: flex;
         flex-direction: column;
-        gap: 30px; /* Espacio entre filas */
+        gap: 30px;
     }
 
     .puzzle-options {
         display: flex;
-        flex-wrap: wrap; /* Permite el ajuste automático de los rompecabezas */
-        gap: 30px; /* Espaciado entre rompecabezas */
-        justify-content: center; /* Centra los rompecabezas */
+        flex-wrap: wrap;
+        gap: 30px;
+        justify-content: center;
     }
 
     .puzzle-option {
-        width: 315px; /* Tamaño de las opciones aumentado */
-        height: 315px; /* Tamaño de las opciones aumentado */
+        width: 315px;
+        height: 315px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        border: 3px solid #00796b; /* Verde oscuro */
-        background-color: #f1f8e9; /* Fondo verde claro */
+        border: 3px solid #228B22; /* Verde inspirado en Rocky */
+        background-color: #FFFACD; /* Amarillo pálido inspirado en Rubble */
         border-radius: 6px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         cursor: pointer;
         position: relative;
     }
@@ -52,109 +52,82 @@
     .puzzle-option img {
         width: 100%;
         height: auto;
-        border-bottom: 3px solid #0288d1; /* Azul celeste */
+        border-bottom: 3px solid #1E90FF; /* Azul oscuro inspirado en Chase */
     }
 
     .puzzle-option h2 {
         margin: 15px 0;
-        color: #00796b; /* Verde oscuro */
-        font-size: 24px; /* Tamaño del título aumentado */
+        color: #FF4500; /* Naranja inspirado en Zuma */
+        font-size: 24px;
     }
 
     .puzzle-option p {
         color: #333;
-        font-size: 16px; /* Tamaño del texto aumentado */
+        font-size: 16px;
     }
 
     footer {
         margin-top: 20px;
         text-align: center;
         font-size: 18px;
-        color: #00796b; /* Verde oscuro */
+        color: #FF0000; /* Rojo inspirado en Marshall */
     }
 
-    /* CSS para pantallas de ordenador (4 rompecabezas por fila) */
     @media (min-width: 601px) {
         .puzzle-options {
-            flex-direction: row; /* Alinea horizontalmente */
-            flex-wrap: wrap; /* Ajusta el contenido en varias filas si es necesario */
+            flex-direction: row;
+            flex-wrap: wrap;
         }
         .puzzle-option {
-            width: calc(25% - 30px); /* 4 rompecabezas por fila con espacio entre ellos */
+            width: calc(25% - 30px);
             height: 315px;
         }
     }
 
-    /* CSS para dispositivos móviles (2 rompecabezas por fila) */
     @media (max-width: 600px) {
         .puzzle-options {
-            grid-template-columns: repeat(2, 1fr); /* 2 rompecabezas por fila */
-            gap: 20px; /* Espaciado entre rompecabezas */
-            display: grid; /* Usa grid para la disposición en filas */
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            display: grid;
         }
 
         .puzzle-option {
-            width: 100%; /* Asegura que cada rompecabezas ocupe el 100% del contenedor */
-            height: auto; /* Ajusta la altura de acuerdo al contenido */
+            width: 100%;
+            height: auto;
         }
     }
     </style>
 </head>
 <body>
-    <h1>¡Hola Theo, selecciona tu Rompecabezas!</h1>
+    <h1>¡Hola Theo, selecciona tu Rompecabezas Paw Patrol!</h1>
     
     <div class="main-container">
-        <!-- Primera fila de rompecabezas -->
         <div class="puzzle-options">
             <div class="puzzle-option" onclick="location.href='rompecabeza1.html';">
                 <img src="images/puzzle1.jpg" alt="Rompecabeza 1">
                 <h2>ROMPECABEZA #1</h2>
-                <p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
+                <p><strong> Diviértete armando este rompecabezas.</strong></p>
             </div>
             <div class="puzzle-option" onclick="location.href='rompecabeza2.html';">
                 <img src="images/puzzle2.jpg" alt="Rompecabeza 2">
                 <h2>ROMPECABEZA #2</h2>
-                <p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
+                <p><strong> Disfruta armando este rompecabezas.</strong></p>
             </div>
             <div class="puzzle-option" onclick="location.href='rompecabeza3.html';">
                 <img src="images/puzzle3.png" alt="Rompecabeza 3">
                 <h2>ROMPECABEZA #3</h2>
-                <p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
+                <p><strong> Completa este divertido rompecabezas.</strong></p>
             </div>
             <div class="puzzle-option" onclick="location.href='rompecabeza4.html';">
                 <img src="images/puzzle4.jpg" alt="Rompecabeza 4">
                 <h2>ROMPECABEZA #4</h2>
-                <p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
-            </div>
-        </div>
-
-        <!-- Segunda fila de rompecabezas -->
-        <div class="puzzle-options">
-            <div class="puzzle-option" onclick="location.href='rompecabeza5.html';">
-                <img src="images/puzzle5.jpg" alt="Rompecabeza 5">
-                <h2>ROMPECABEZA #5</h2>
-                <p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
-            </div>
-            <div class="puzzle-option" onclick="location.href='rompecabeza6.html';">
-                <img src="images/puzzle6.jpg" alt="Rompecabeza 6">
-                <h2>ROMPECABEZA #6</h2>
-                <p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
-            </div>
-            <div class="puzzle-option" onclick="location.href='rompecabeza7.html';">
-                <img src="images/puzzle7.jpg" alt="Rompecabeza 7">
-                <h2>ROMPECABEZA #7</h2>
-                <p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
-            </div>
-            <div class="puzzle-option" onclick="location.href='rompecabeza8.html';">
-                <img src="images/puzzle8.jpg" alt="Rompecabeza 8">
-                <h2>ROMPECABEZA #8</h2>
-                <p><strong> Disfruta armando este rompecabezas y diviértete mientras lo completas.</strong></p>
+                <p><strong> ¡A jugar con este rompecabezas!</strong></p>
             </div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2024 Tu Sitio de Rompecabezas. Todos los derechos reservados.</p>
+        <p>&copy; 2024 Tu Sitio de Rompecabezas Paw Patrol. Todos los derechos reservados.</p>
     </footer>
     
 </body>
